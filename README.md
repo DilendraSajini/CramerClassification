@@ -9,7 +9,7 @@ Cramer classification is a series of yes/no questions and is used as a rough gui
 This is an initial Java implementation of a sample project that classify sample files based metadata conains it. SVG file describes the chemical and its attributes to a collection of shapes and objects (atoms).  We  then analyse these files and run them through a classification workflow just like the Cramer classification, inspecting different attributes to ultimately get a category for each file.
 The workflow looks like this:
 
-![Image describing the workflow we will build as part of this kata](workflow.jpg)
+![Image describing the workflow](workflow.jpg)
 
 ### Requirements
 * Maven 3.x
