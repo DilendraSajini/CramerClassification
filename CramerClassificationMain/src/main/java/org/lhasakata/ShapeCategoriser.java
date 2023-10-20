@@ -8,6 +8,7 @@ import static org.lhasakata.StartupUtils.ROOT_DIR;
 import java.io.File;
 import java.util.List;
 
+import org.katas.model.ModelBuilder;
 import org.lhasakata.assess.Assess;
 
 import com.kitfox.svg.SVGElement;
@@ -21,6 +22,7 @@ public class ShapeCategoriser
 		help(arg0);
 		testOnly(arg0, arg1);
 		String workingDir = setupWorkingDir(arg0);
+		
 //		checkDirectoriesExist();
 //		removeAllFilesFromOutputDirectory();
 //		
@@ -39,6 +41,8 @@ public class ShapeCategoriser
 //
 //		// Run tests
 //		Assess.assess(workingDir);
+		
+		new ModelBuilder().build();
 	}
 
 	static int calculateCategory(List<SVGElement> elements)
