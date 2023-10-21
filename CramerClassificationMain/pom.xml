@@ -41,11 +41,11 @@
 			<version>${junit.version}</version>
 			<scope>test</scope>
 		</dependency>
-			<dependency>
-				<groupId>com.cramer</groupId>
-				<artifactId>MachineLearningModel</artifactId>
-				<version>1.0-SNAPSHOT</version>
-			</dependency>
+<!--			<dependency>-->
+<!--				<groupId>com.cramer</groupId>-->
+<!--				<artifactId>MachineLearningModel</artifactId>-->
+<!--				<version>1.0-SNAPSHOT</version>-->
+<!--			</dependency>-->
 	</dependencies>
 
 	<build>

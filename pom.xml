@@ -10,7 +10,7 @@
     <packaging>pom</packaging>
 
     <modules>
-        <module>MachineLearningModel</module>
+        <module>DecisionGraph</module>
         <module>CramerClassificationMain</module>
     </modules>
 </project>
