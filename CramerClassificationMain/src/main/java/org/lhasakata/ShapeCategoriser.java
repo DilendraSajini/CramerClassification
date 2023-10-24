@@ -1,13 +1,21 @@
 package org.lhasakata;
 
+import static org.katas.SvgLocations.CAT1_DIR;
+import static org.katas.SvgLocations.CAT2_DIR;
+import static org.katas.SvgLocations.CAT3_DIR;
+import static org.katas.SvgLocations.INPUT_DIR;
+import static org.katas.SvgLocations.OUTPUT_DIRS_ALL;
+import static org.katas.SvgLocations.UNCLASSIFIED_DIR;
 import static org.lhasakata.StartupUtils.INPUT_FOLDER;
 import static org.lhasakata.StartupUtils.ROOT_DIR;
-//import static org.lhasakata.StartupUtils.checkDirectoriesExist;
-//import static org.lhasakata.StartupUtils.removeAllFilesFromOutputDirectory;
 
 import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.util.Arrays;
 import java.util.List;
 
+import org.katas.graph.DecisionBuilder;
 import org.lhasakata.assess.Assess;
 
 import com.kitfox.svg.SVGElement;
@@ -22,41 +30,79 @@ public class ShapeCategoriser
 		testOnly(arg0, arg1);
 		String workingDir = setupWorkingDir(arg0);
 		
-//		checkDirectoriesExist();
-//		removeAllFilesFromOutputDirectory();
-//		
-//		var reader = SvgReader.getSvgReader();
-//		var files = SvgReader.getAllSvgs(workingDir + "/" + INPUT_FOLDER);
-//		for (File file : files)
-//		{
-//			List<SVGElement> elements = reader.readSvgFile(file);
-//
-//			// TODO categorise file
-//			int category = calculateCategory(elements);
-//			
-//			//TODO copy file to correct output folder
-//			copyFileToTargetCategoryFolder(file, category);
-//		}
-//
-//		// Run tests
-//		Assess.assess(workingDir);
+		checkDirectoriesExist();
+		removeAllFilesFromOutputDirectory();
+		
+		var reader = SvgReader.getSvgReader();
+		var files = SvgReader.getAllSvgs(workingDir + "/" + INPUT_FOLDER);
+		for (File file : files)
+		{
+			List<SVGElement> elements = reader.readSvgFile(file);
+			int category = calculateCategory(elements);
+			System.out.println(file.getName() +" --> " + category);
+			//copyFileToTargetCategoryFolder(file, category);
+		}
+		Assess.assess(workingDir);
 		
 	}
 
 	static int calculateCategory(List<SVGElement> elements)
 	{
-		//TODO implement workflow
-		return -1;
+		return DecisionBuilder.testSvg(elements);
 	}
 
 	static void copyFileToTargetCategoryFolder(File file, int category)
 	{
-		//TODO move your files to the desired output directory,
-		//  based on the calculated category
+		try {
+			Files.copy(file.toPath(), categoryToOutputDir(category, file.getName()).toPath());
+		}
+		catch (IOException e) {
+			throw new RuntimeException(e);
+		}
+	}
+	
+	private static File categoryToOutputDir(int category, String filename) {
+		switch (category) {
+			case 3: return new File(CAT3_DIR + "/" + filename);
+			case 2: return new File(CAT2_DIR + "/" + filename);
+			case 1: return new File(CAT1_DIR + "/" + filename);
+			case -1:
+			default: return new File(UNCLASSIFIED_DIR + "/" + filename);
+		}
+	}
+	
+	private static void checkDirectoriesExist() {
+		File inputDir = checkDirectoryExists(INPUT_DIR);
+		checkDirContainsSvgs(inputDir);
+		OUTPUT_DIRS_ALL.forEach(ShapeCategoriser::checkDirectoryExists);
 	}
 
+	private static void checkDirContainsSvgs(File directory) {
+		var files = directory.listFiles((dir, name) -> name.toLowerCase().endsWith(".svg"));
+		if (files == null || files.length == 0) {
+			throw new IllegalStateException("Directory contains no svgs: " + directory);
+		}
+	}
 
+	private static File checkDirectoryExists(String dir) {
+		var directory = new File(dir);
+		if (!directory.exists()) {
+			throw new IllegalStateException("Directory does not exist: " + directory);
+		}
+		return directory;
+	}
 
+	private static void removeAllFilesFromOutputDirectory() {
+		OUTPUT_DIRS_ALL.forEach(dir -> {
+			var file = new File(dir);
+			if (file.exists()) {
+				var contents = file.listFiles();
+				if (contents != null) {
+					Arrays.stream(contents).forEach(File::delete);
+				}
+			}
+		});
+	}
 
 	private static String setupWorkingDir(String arg0) {
 		var workingDir = arg0 != null && !arg0.isBlank() ? arg0 : ROOT_DIR;

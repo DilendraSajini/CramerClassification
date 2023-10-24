@@ -36,10 +36,18 @@ public interface SvgConstants
 	String rectangle = "rectangle";
 	String text = "text";
 	String line = "line";
+	String ellipse = "ellipse";
+	String square = "square";
 
 	// Text
 	String textContains = "textContains";
-
+	String numOfElements = "numOfElements";
+	String length = "length";
+	String height = "height";
+	String opacity = "opacity";
+	String area = "area";
+	String elementCount ="elementCount";
+	
 	// Dimensions
 	String radius = "radius";
 	String numericComparator = "numericComparator";

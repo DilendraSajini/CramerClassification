@@ -35,7 +35,7 @@ public class DbService implements AutoCloseable
 		OrientDBConfig orientDBConfig = builder.build();
 		String dbAddress = URL_REMOTE_PREFIX + "localhost" + ":" + "2424" + "/" + DATABASE_NAME;
 		OrientDB orientDB = new OrientDB(dbAddress, orientDBConfig);
-		var factory = new OrientGraphFactory(orientDB, DATABASE_NAME, null, "root", "root4me");
+		var factory = new OrientGraphFactory(orientDB, DATABASE_NAME, null, "root", "root");
 		var graph = newOrientGraph(factory);
 		return graph;
 	}
